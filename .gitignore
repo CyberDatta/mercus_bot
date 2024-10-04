@@ -3,3 +3,4 @@
 /test.py
 /bot.py
 */__pycache__
+.vscode/
