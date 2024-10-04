@@ -6,7 +6,7 @@ class admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(help="!remove_mewros @user amount")
     @commands.has_permissions(administrator=True)
     async def remove_mewros(self,ctx, user: discord.Member, amount):
         amount = int(amount)
@@ -20,13 +20,11 @@ class admin(commands.Cog):
             return False
 
         users[str(user.id)]["mewros"] = users[str(user.id)]["mewros"]-amount
-
         await db.dump_users(users)
-
         await ctx.send(f"{ctx.author.mention} removed {amount} mewros from {user.mention}")
 
 
-    @commands.command()
+    @commands.command(help="!add_mewros @user amount") 
     @commands.has_permissions(administrator=True)
     async def add_mewros(self,ctx, user: discord.Member, amount):
         amount = int(amount)

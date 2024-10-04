@@ -27,6 +27,7 @@ async def shop(ctx, category="all"):
                         value=items[item]["category"], inline=True)
     await ctx.send(embed=embed)
 
+
 async def find_race_winner(chance_array):
 
     stable = {}
@@ -47,13 +48,14 @@ async def find_race_winner(chance_array):
                 break
     return final_stable
 
+
 class taps(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    @commands.cooldown(1,3600,commands.BucketType.user)
-    async def crime(self,ctx):
+    @commands.command(help="!crime")
+    @commands.cooldown(1, 3600, commands.BucketType.user)
+    async def crime(self, ctx):
         slash_chance = 20
         slashing_rates = [100, 170]
         earning_rates = [350, 600]
@@ -84,10 +86,10 @@ class taps(commands.Cog):
 
         await db.dump_users(users)
         await ctx.send(message)
-        
-    @commands.command()
+
+    @commands.command(help="!slut")
     @commands.cooldown(1, 3600, commands.BucketType.user)
-    async def slut(self,ctx):
+    async def slut(self, ctx):
         slash_chance = 35
         slashing_rates = [200, 350]
         earning_rates = [400, 900]
@@ -117,10 +119,10 @@ class taps(commands.Cog):
             user.id)]["mewros"]+earnings-slashings
         await db.dump_users(users)
         await ctx.send(message)
-        
-    @commands.command()
-    @commands.cooldown(1,3600,commands.BucketType.user)
-    async def rob(self,ctx, victim: discord.Member):
+
+    @commands.command(help="!rob @user")
+    @commands.cooldown(1, 3600, commands.BucketType.user)
+    async def rob(self, ctx, victim: discord.Member):
         await db.open_account(ctx, ctx.author)
         await db.open_account(ctx, victim)
 
@@ -130,13 +132,12 @@ class taps(commands.Cog):
         victim_balance = users[str(victim.id)]["mewros"]
         user_balance = users[str(user.id)]["mewros"]
 
-
-
         fail_prob = int((user_balance*100)/(victim_balance+user_balance))
-        
-        if(user_balance > victim_balance):
-            robbed_value=(1-fail_prob/100)*victim_balance
-            users[str(user.id)]["mewros"] = users[str(victim.id)]["mewros"]-robbed_value
+
+        if (user_balance > victim_balance):
+            robbed_value = (1-fail_prob/100)*victim_balance
+            users[str(user.id)]["mewros"] = users[str(
+                victim.id)]["mewros"]-robbed_value
             await ctx.send(f"{user.mention} tried to rob {victim.mention}, but lost {robbed_value}")
             return False
 
@@ -154,9 +155,9 @@ class taps(commands.Cog):
         await db.dump_users(users)
         await ctx.send(f"{user.mention} tried to rob {victim.mention} and earned {robbed_value}")
 
-    @commands.command()
-    @commands.cooldown(1,4*3600,commands.BucketType.user)
-    async def work(self,ctx):
+    @commands.command(help="!work")
+    @commands.cooldown(1, 4*3600, commands.BucketType.user)
+    async def work(self, ctx):
         earning_rates = [400, 900]
         fee = 20
         await db.open_account(ctx, ctx.author)
@@ -177,9 +178,13 @@ class taps(commands.Cog):
 
         await ctx.send(f"{user.mention} worked hard and earned {earnings} mewros")
         return True
-    
-    @commands.command()
-    async def slots(self,ctx):
+
+    @commands.command(help="!slots")
+    async def slots(self, ctx):
+        if (ctx.channel.id not in db.SLOTS_CHANNEL):
+            await ctx.send("This command can only be used in the slots channel.")
+            return
+
         fee = 30
         reward = 1000
 
@@ -198,15 +203,16 @@ class taps(commands.Cog):
         result = [random.choice(symbols) for _ in range(3)]
 
         if result[0] == result[1] == result[2]:
-            users[str(user.id)]["mewros"] = users[str(user.id)]["mewros"]+reward
+            users[str(user.id)]["mewros"] = users[str(
+                user.id)]["mewros"]+reward
             await db.dump_users(users)
             await ctx.send(f"Jackpot! You won with {result[0]} - {result[1]} - {result[2]} and got {reward} mewros")
         else:
             await db.dump_users(users)
             await ctx.send(f"Sorry, you lost. Your result was {result[0]} - {result[1]} - {result[2]}")
 
-    @commands.command()
-    async def race(self,ctx):
+    @commands.command(help="!race")
+    async def race(self, ctx):
         user = ctx.author
 
         await db.open_account(ctx, user)
@@ -271,7 +277,7 @@ class taps(commands.Cog):
         initial_view = View()
 
         for item in users[str(user.id)]["inventory"]:
-            if(items[item]["category"] !="race_horse"):
+            if (items[item]["category"] != "race_horse"):
                 break
             race_horse_name = items[item]["name"]
 
@@ -284,17 +290,22 @@ class taps(commands.Cog):
 
         await ctx.send("select your race horse:", view=initial_view)
 
-    @commands.command()
-    async def blackjack(self,ctx, pool):
+    @commands.command(help="!blackjack bet_amount")
+    async def blackjack(self, ctx, pool):
+        if (ctx.channel.id not in db.BLACKJACK_CHANNEL):
+            await ctx.send("This command can only be used in the blackjack channel.")
+            return
+
         pool = int(pool)
         hidden_value = ["hidden"]
 
         user = ctx.author
         await db.open_account(ctx, user)
-        
-        cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+
+        cards = ['2', '3', '4', '5', '6', '7',
+                 '8', '9', '10', 'J', 'Q', 'K', 'A']
         value_table = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
-                    '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10, 'A': [1, 11]}
+                       '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10, 'A': [1, 11]}
 
         start_game = "🃏"
         start_game_button = Button(
@@ -302,7 +313,7 @@ class taps(commands.Cog):
 
         exit_game = "🇱"
         exit_game_button = Button(label="Run away (costs your dignity)",
-                                style=discord.ButtonStyle.danger, emoji=exit_game)
+                                  style=discord.ButtonStyle.danger, emoji=exit_game)
 
         hit = "👊"
         hit_button = Button(
@@ -423,22 +434,24 @@ class taps(commands.Cog):
         initial_view.add_item(exit_game_button)
         await ctx.send(view=initial_view)
 
-    @commands.command()
-    async def pay_ubi(self,ctx):
+    @commands.command(help="!pay_ubi")
+    async def pay_ubi(self, ctx):
         user = ctx.author
         await db.open_account(ctx, user)
-        
+
         timezone = pytz.timezone(ctx.author.timezone)
         now = datetime.datetime.now(timezone)
         if now.hour < 20 or 21 < now.hour:
-            await ctx.send("UBI is only available during 8 to 9 PM")
+            await ctx.send(f"{user.mention} UBI is only available from 8 to 9 PM")
             return
 
         users = await db.load_users()
 
         users[str(user.id)]["mewros"] = users[user]["mewros"]+500
         await db.dump_users(users)
-        await ctx.send(f"{user.mention} processed") 
+        await ctx.send(f"{user.mention} processed")
+
+
 async def setup(bot):
     await bot.add_cog(taps(bot))
 

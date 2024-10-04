@@ -1,14 +1,11 @@
-# purpose of this doc is to create a json db to get data from
 from discord.ext import commands, tasks
 import discord
 import os
 import db_interaction as db
 
-# BOT_TOKEN = 'insert bot token'
-# CHANNEL_ID = 'insert default channel'
+BOT_TOKEN = 'insert token here'
 
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
-
 
 @bot.event
 async def on_ready():
@@ -22,7 +19,7 @@ async def pay_weekly_bonus():
     if pay_weekly_bonus.current_loop == 0:
         return
     # Replace with your desired channel ID
-    channel = bot.get_channel(CHANNEL_ID)
+    channel = bot.get_channel(db.TESTING_CHANNEL[1])
 
     users = await db.load_users()
     for user in users:
@@ -50,7 +47,7 @@ async def pay_monthly_tax():
         return
     tax_rate = 0.25
     # Replace with your desired channel ID
-    channel = bot.get_channel(CHANNEL_ID)
+    channel = bot.get_channel(db.TESTING_CHANNEL[1])
     users = await db.load_users()
     for user in users:
         users[user]["mewros"] = int(
@@ -62,8 +59,9 @@ async def pay_monthly_tax():
 @bot.event
 async def on_message(message):
     
-    await bot.process_commands(message)
-
+    if(message.channel.id in db.TESTING_CHANNEL or message.channel.id in db.BLACKJACK_CHANNEL or message.channel.id in db.SLOTS_CHANNEL):
+        await bot.process_commands(message)
+        
     words = message.content.split()
     if (len(words) < 30):
         return False

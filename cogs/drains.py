@@ -5,7 +5,7 @@ class drains(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(help="!buy item-id")
     async def buy(self,ctx, item_id):
         user = ctx.author
         await db.open_account(ctx, user)
