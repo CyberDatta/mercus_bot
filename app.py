@@ -4,8 +4,8 @@ import discord
 import os
 import db_interaction as db
 
-BOT_TOKEN = 'MTI4NTk1NzM3ODIzNTE3NDkyMw.GrcXBB.F01tUJZRQIzKbsEMGqFHcKWdzXM9Hdmkt1q5yE'
-CHANNEL_ID = 1285960250754727988
+BOT_TOKEN = 'insert bot token'
+CHANNEL_ID = 'insert default channel'
 
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 
