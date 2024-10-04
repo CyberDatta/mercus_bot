@@ -1,26 +1,8 @@
 # purpose of this doc is to create a json db to get data from
-from discord.ui import Button, View
 from discord.ext import commands, tasks
 import discord
-from dataclasses import dataclass
-import json
 import os
-import random
-import functools
-import time
-import datetime
-import pytz
-from cogs import db_interaction as db
-
-HOSD = []
-HOSG = []
-HOSS = []
-CF = []
-PERSONALITY = []
-
-BLACKJACK=[]
-SLOTS=[]
-RACING=[]
+import db_interaction as db
 
 BOT_TOKEN = 'MTI4NTk1NzM3ODIzNTE3NDkyMw.GrcXBB.F01tUJZRQIzKbsEMGqFHcKWdzXM9Hdmkt1q5yE'
 CHANNEL_ID = 1285960250754727988
@@ -35,9 +17,6 @@ async def on_ready():
     pay_monthly_tax.start()
     print("the fallen leaves tell a story")
 
-
-
-
 @tasks.loop(hours=168)
 async def pay_weekly_bonus():
     if pay_weekly_bonus.current_loop == 0:
@@ -47,15 +26,15 @@ async def pay_weekly_bonus():
 
     users = await db.load_users()
     for user in users:
-        if(users[user]["rank"] in HOSD):
+        if(users[user]["rank"] in db.HOSD):
             users[user]["mewros"] = users[user]["mewros"]+3500
-        elif(users[user]["rank"] in HOSG):
+        elif(users[user]["rank"] in db.HOSG):
             users[user]["mewros"] = users[user]["mewros"]+2450
-        elif(users[user]["rank"] in HOSS):
+        elif(users[user]["rank"] in db.HOSS):
             users[user]["mewros"] = users[user]["mewros"]+1750
-        elif(users[user]["rank"] in CF):
+        elif(users[user]["rank"] in db.CF):
             users[user]["mewros"] = users[user]["mewros"]+1575
-        elif(users[user]["rank"] in PERSONALITY):
+        elif(users[user]["rank"] in db.PERSONALITY):
             users[user]["mewros"] = users[user]["mewros"]+1050        
         else:
             users[user]["mewros"] = users[user]["mewros"]+0

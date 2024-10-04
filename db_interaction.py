@@ -2,12 +2,15 @@ import os
 import json
 
 
-HOSD = []
-HOSG = []
-HOSS = []
-CF = []
-PERSONALITY = []
+HOSD = [1]
+HOSG = [2]
+HOSS = [3]
+CF = [4]
+PERSONALITY = [5]
 
+BLACKJACK_CHANNEL=[1]
+SLOTS_CHANNEL=[2]
+RACING_CHANNEL=[3]
 
 async def load_users():
     filepath = os.path.join(os.getcwd(), "db/users.json")
@@ -25,7 +28,7 @@ async def dump_users(users):
 
 async def open_account(ctx, user, message_status=False,gmintern=True):
     if(gmintern==False):
-        await ctx.send("You must use the gmintern command")        
+        await ctx.send("You must use the gmintern command")
     
     users = await load_users()
     
@@ -54,6 +57,7 @@ async def open_account(ctx, user, message_status=False,gmintern=True):
             for person in PERSONALITY:
                 if person in role_ids:
                     users[str(user.id)]["rank"] = person
+                    
     await dump_users(users)
     if (message_status == False):
         await ctx.send(f"Opened a Mewro acccount for {user.mention}")
