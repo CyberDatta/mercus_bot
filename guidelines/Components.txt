@@ -1,0 +1,67 @@
+mercle-bot:0.0.1
+  title: "mercus"
+  description:"casual fun, and general server commands"
+
+servers:
+    server1: 
+    Name:"Placeholders"
+    db:"Placeholders"
+
+Roles:
+    Name:HOSD
+    Name:closefam
+    Name:personality
+    Name:HOSS
+    Name:HOSG
+
+Sessions:
+    Name: "Passive"
+    description: "purpose of this session is to properly provide UBI and Weekly income"
+    commands:
+        Name: !payday 
+        description:provide UBI or Weekly allowance(dependent on Role)
+        
+
+    Name: "Economy"
+    description: "For commands without a cooldown"
+    commands:
+        Name:!help
+        description:provides list of commands
+        Name:!Add-mewros
+        description: Adding mewros to a user/role (admin) 
+        Name:!remove-mewros
+        description: Removing mewros of a user/role (admin) 
+        Name:!give-mewros 
+        description: one user giving to another 
+        Name:!mewros
+        description: shows user’s balance 
+        Name:!leaderboard
+        description: shows leaderboard of wealthiest folks upto the user’s rank
+        Name:!black-jack
+        description:Buying 1 ticket from shop and classic 21 Blackjack 
+        Name:!animal-race 
+        description:3 round animal races
+        Name:!slot-machine
+        description:slot machine
+        Name:!rob <user>
+        description:steal an amount of money as determined by the guidelines
+    Actions:
+        Trigger: sending a message in general chat
+        Bullet: Recieve a sum of mewros
+
+    Name: "Hourly"
+    description: "purpose of this session is to coordinate work/crime/slut activities.
+    commands:
+        Name: !work
+        description:refer to guidelines
+        Name: !crime
+        description:refer to guidelines
+        Name: !slut
+        description:refer to guidelines
+
+    Name:"Tax-Collecter"
+        description: Coordinates monthly cycles
+        Actions:
+            Trigger:Session End
+            Bullet:percentage income deducted
+        

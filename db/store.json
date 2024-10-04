@@ -1,0 +1,38 @@
+{
+".122":{
+    "name":"green pig",
+    "cost":150,
+    "category":"race_horse",
+    "rate":12
+},
+".123":{
+    "name":"green elephant",
+    "cost":12,
+    "category":"race_horse",
+    "rate":100
+},
+".124":{
+    "name":"green cheetah",
+    "cost":12,
+    "category":"race_horse",
+    "rate":12
+},
+".125":{
+    "name":"green man",
+    "cost":12,
+    "category":"race_horse",
+    "rate":90
+},
+".126":{
+    "name":"green donkey",
+    "cost":12,
+    "category":"race_horse",
+    "rate":12
+},
+".127":{
+    "name":"green monkey",
+    "cost":12,
+    "category":"race_horse",
+    "rate":12
+}
+}
